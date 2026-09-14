@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Final — Photomosaïque | GIF-4105/7105</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --noir: #0d0d0d;
+            --noir2: #141414;
+            --blanc: #f5f5f0;
+            --accent: #00c9b1;
+            --accent-dim: rgba(0,201,177,0.15);
+            --accent-dark: #009e8c;
+            --gris: #888880;
+            --gris-clair: #e8e8e0;
+            --texte: #2a2a25;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--blanc);
+            color: var(--texte);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: var(--noir);
+            color: var(--blanc);
+            padding: 90px 70px 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,201,177,0.12);
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            top: 40px; right: 80px;
+            width: 350px; height: 350px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,201,177,0.07);
+        }
+
+        .header-tag {
+            font-size: 11px; letter-spacing: 4px;
+            text-transform: uppercase; color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(38px, 5.5vw, 70px);
+            font-weight: 400; line-height: 1.08;
+            margin-bottom: 16px;
+        }
+
+        h1 em { font-style: italic; color: var(--accent); }
+
+        .header-meta {
+            font-size: 13px; color: rgba(245,245,240,0.4);
+            margin-top: 32px; display: flex; gap: 48px;
+        }
+
+        .authors {
+            margin-top: 36px;
+            display: flex; gap: 40px;
+        }
+
+        .author-block .author-bg {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px; color: rgba(0,201,177,0.07);
+            letter-spacing: 4px; line-height: 1;
+        }
+        .author-block .author-fg {
+            font-size: 13px; color: var(--accent);
+            letter-spacing: 3px; text-transform: uppercase;
+            margin-top: -12px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: var(--noir);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 0 70px;
+            display: flex; overflow-x: auto;
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        nav a {
+            color: rgba(245,245,240,0.38);
+            text-decoration: none; font-size: 11px;
+            letter-spacing: 2px; text-transform: uppercase;
+            padding: 17px 22px; transition: color 0.3s;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+        }
+        nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* ── CONSEIL BANNER ── */
+        .conseil-banner {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 18px 28px;
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .conseil-banner svg { flex-shrink: 0; color: var(--accent); }
+        .conseil-banner p {
+            font-size: 14px;
+            color: #0d3530;
+            line-height: 1.6;
+        }
+        .conseil-banner strong { color: var(--accent-dark); }
+
+        /* ── MAIN ── */
+        main { max-width: 1120px; margin: 0 auto; padding: 90px 48px; }
+
+        .section { margin-bottom: 130px; }
+
+        .section-label {
+            font-size: 10px; letter-spacing: 4px;
+            text-transform: uppercase; color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(30px, 4vw, 52px);
+            font-weight: 400; margin-bottom: 56px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gris-clair);
+        }
+
+        /* ── INTRO BOX ── */
+        .intro {
+            background: var(--noir); color: var(--blanc);
+            padding: 48px 60px; margin-bottom: 70px;
+        }
+        .intro h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px; font-weight: 400;
+            color: var(--accent); margin-bottom: 18px;
+        }
+        .intro p {
+            font-size: 15px; line-height: 1.9;
+            color: rgba(245,245,240,0.65);
+            max-width: 760px; margin-bottom: 12px;
+        }
+
+        /* ── ALGO STEPS ── */
+        .algo-steps {
+            display: grid; grid-template-columns: repeat(4,1fr);
+            gap: 1px; background: rgba(255,255,255,0.08);
+            margin-top: 36px;
+        }
+        .algo-step { background: var(--noir2); padding: 24px; }
+        .step-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 34px; color: var(--accent);
+            opacity: 0.35; margin-bottom: 10px;
+        }
+        .step-text { font-size: 13px; color: rgba(245,245,240,0.55); line-height: 1.6; }
+
+        /* ── SUBSECTION LABEL ── */
+        .subsection-label {
+            font-size: 10px; letter-spacing: 4px;
+            text-transform: uppercase; color: var(--accent);
+            margin-bottom: 14px; margin-top: 36px; display: block;
+        }
+
+        /* ── SERIE ── */
+        .serie {
+            margin-bottom: 90px; padding-bottom: 90px;
+            border-bottom: 1px solid var(--gris-clair);
+        }
+        .serie:last-child { border-bottom: none; }
+
+        .serie-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; font-weight: 400; margin-bottom: 6px;
+        }
+        .serie-subtitle {
+            font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--gris);
+            margin-bottom: 36px;
+        }
+
+        /* ── IMAGE GRIDS ── */
+        .img-row {
+            display: grid; gap: 12px; margin-bottom: 12px;
+        }
+        .img-row.col-1 { grid-template-columns: 1fr; }
+        .img-row.col-2 { grid-template-columns: 1fr 1fr; }
+        .img-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .img-row.col-4 { grid-template-columns: repeat(4,1fr); }
+
+        .img-block {
+            position: relative; overflow: hidden;
+            background: var(--noir2);
+        }
+        .img-block img {
+            width: 100%; height: 220px;
+            object-fit: cover; display: block;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+        .img-block.tall img { height: 300px; }
+        .img-block.short img { height: 140px; }
+        .img-block:hover img { transform: scale(1.03); }
+
+        .img-label {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.75));
+            color: white; padding: 24px 14px 10px;
+            font-size: 10px; letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Placeholder quand pas d'image */
+        .img-placeholder {
+            width: 100%; height: 220px;
+            background: var(--noir2);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            border: 1px dashed rgba(0,201,177,0.25);
+            color: rgba(0,201,177,0.4);
+            font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; gap: 10px;
+            cursor: default;
+        }
+        .img-placeholder.tall { height: 300px; }
+        .img-placeholder svg { opacity: 0.3; }
+
+        /* ── PARAMS BOX ── */
+        .params-box {
+            background: var(--noir); color: rgba(245,245,240,0.65);
+            padding: 18px 24px; font-size: 13px;
+            line-height: 1.85; margin-bottom: 14px;
+            font-family: monospace;
+            border-left: 3px solid var(--accent);
+        }
+        .params-box span { color: var(--accent); }
+
+        /* ── DISCUSSION ── */
+        .discussion {
+            background: var(--accent-dim);
+            padding: 28px 34px;
+            border-left: 3px solid var(--accent);
+            margin-top: 18px;
+        }
+        .discussion h4 {
+            font-size: 10px; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--accent-dark);
+            margin-bottom: 12px;
+        }
+        .discussion p {
+            font-size: 15px; line-height: 1.85;
+            color: #0d3530; margin-bottom: 10px;
+        }
+        .discussion p:last-child { margin-bottom: 0; }
+
+        /* ── EQUATION ── */
+        .equation-box {
+            background: var(--noir); color: var(--blanc);
+            padding: 28px 32px; margin: 20px 0;
+            font-size: 18px; text-align: center;
+            font-family: 'Playfair Display', serif;
+            border-left: 3px solid var(--accent);
+        }
+        .equation-box .eq-sub {
+            font-size: 12px; color: rgba(245,245,240,0.45);
+            margin-top: 10px; font-family: 'DM Sans', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── SPECS TABLE ── */
+        .specs-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+        .specs-table td {
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--gris-clair);
+            font-size: 14px;
+        }
+        .specs-table td:first-child {
+            color: var(--accent-dark); font-size: 11px;
+            letter-spacing: 2px; text-transform: uppercase; width: 38%;
+        }
+
+        /* ── COMPARAISON 2 COL ── */
+        .compare-wrap {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 24px; margin-bottom: 24px;
+        }
+        .compare-col { }
+        .compare-col h5 {
+            font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--gris);
+            margin-bottom: 10px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--noir);
+            color: rgba(245,245,240,0.25);
+            text-align: center; padding: 40px;
+            font-size: 11px; letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* ── LIGHTBOX ── */
+        .lightbox {
+            display: none; position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.93);
+            z-index: 9999; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox-img-wrap {
+            position: relative;
+            cursor: grab;
+            user-select: none;
+        }
+        .lightbox-img-wrap.dragging { cursor: grabbing; }
+        .lightbox img {
+            max-width: 92vw; max-height: 92vh;
+            object-fit: contain;
+            display: block;
+            transform-origin: center center;
+            pointer-events: none;
+            transition: none;
+        }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 30px;
+            color: var(--accent); font-size: 34px; cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-hint {
+            position: absolute; bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.3);
+            font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+        .lightbox-zoom-reset {
+            position: absolute; bottom: 20px; right: 30px;
+            color: var(--accent); font-size: 11px;
+            letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer; opacity: 0.6;
+        }
+        .lightbox-zoom-reset:hover { opacity: 1; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 720px) {
+            header, main { padding: 40px 20px; }
+            nav { padding: 0 20px; }
+            .img-row.col-2, .img-row.col-3, .img-row.col-4 { grid-template-columns: 1fr; }
+            .algo-steps { grid-template-columns: 1fr 1fr; }
+            .compare-wrap { grid-template-columns: 1fr; }
+            .authors { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header>
+    <p class="header-tag">GIF-4105 / 7105 — Photographie Algorithmique — Projet Final</p>
+    <h1>Photo<em>mosaïque</em></h1>
+    <div class="header-meta">
+        <span>Hiver 2026</span>
+        <span>Université Laval</span>
+    </div>
+    <div class="authors">
+        <div class="author-block">
+            <div class="author-bg">DIALLO</div>
+            <div class="author-fg">Colombe Diallo</div>
+        </div>
+        <div class="author-block">
+            <div class="author-bg">DHOSSOU</div>
+            <div class="author-fg">Tadagbé Dhossou</div>
+        </div>
+    </div>
+</header>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+    <a href="#etape1">Mosaïque uniforme</a>
+    <a href="#etape2">Vraie photomosaïque</a>
+    <a href="#analyse">Analyse & Discussion</a>
+    <a href="#limites">Limites & Améliorations</a>
+    <a href="#fun">On s'amuse</a>
+    <a href="#conclusion">Conclusion</a>
+</nav>
+
+<main>
+
+<!-- ══════════════════ CONSEIL ══════════════════ -->
+<div class="conseil-banner">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    <p><strong>Conseil :</strong> N'hésitez pas à cliquer sur n'importe quelle image pour l'agrandir. Dans la visionneuse, utilisez la <strong>molette de la souris pour zoomer</strong> et faites <strong>glisser l'image</strong> pour vous déplacer dans les détails — particulièrement utile pour apprécier la qualité des tuiles dans les mosaïques.</p>
+</div>
+
+<!-- ══════════════════ ÉTAPE 1 ══════════════════ -->
+<section class="section" id="etape1">
+    <p class="section-label">Étape 1</p>
+    <h2 class="section-title">Mosaïque uniforme</h2>
+
+    <div class="intro">
+        <h2>Principe</h2>
+        <p>
+            L'image cible est reconstituée en répétant une seule et même image miniaturisée (la tuile),
+            colorisée différemment pour chaque bloc. Deux méthodes d'ajustement colorimétrique sont comparées :
+            la <strong>multiplication en RGB</strong> et la <strong>translation dans l'espace LAB</strong>.
+        </p>
+        <div class="algo-steps">
+            <div class="algo-step"><div class="step-num">01</div><div class="step-text">Découper l'image cible en blocs N×N pixels</div></div>
+            <div class="algo-step"><div class="step-num">02</div><div class="step-text">Calculer la couleur moyenne de chaque bloc (RGB ou LAB)</div></div>
+            <div class="algo-step"><div class="step-num">03</div><div class="step-text">Ajuster la tuile pour correspondre à la couleur du bloc</div></div>
+            <div class="algo-step"><div class="step-num">04</div><div class="step-text">Assembler toutes les tuiles ajustées côte à côte</div></div>
+        </div>
+    </div>
+
+    <span class="subsection-label">Méthodes d'ajustement colorimétrique</span>
+
+    <div class="equation-box">
+        Ajustement RGB : tuile<sub>ajustée</sub> = tuile × (couleur_bloc / couleur_tuile)
+        <div class="eq-sub">Canal par canal — R, G, B séparément</div>
+    </div>
+    <div class="equation-box">
+        Ajustement LAB : tuile<sub>LAB</sub> = tuile<sub>LAB</sub> + (μ<sub>bloc</sub> − μ<sub>tuile</sub>)
+        <div class="eq-sub">Translation uniforme dans l'espace perceptuel CIE-LAB</div>
+    </div>
+
+    <!-- SÉRIE 1 -->
+    <div class="serie">
+        <h3 class="serie-title">Série 1 — Image couleur, N = 8</h3>
+        <p class="serie-subtitle">Image cible : Canard &nbsp;|&nbsp; Tuile : Paysage</p>
+
+        <div class="img-row col-4">
+            <div class="img-block tall">
+                <img src="images/canard.jpg" alt="Image cible">
+                <div class="img-label">Image cible</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Ouaga.png" alt="Image tuile">
+                <div class="img-label">Tuile</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/resultat_canard_RGB.png" alt="Mosaïque RGB">
+                <div class="img-label">Ajustement RGB</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/resultat_canard_LAB.png" alt="Mosaïque LAB">
+                <div class="img-label">Ajustement LAB</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille des tuiles :</span> N = 8 pixels<br>
+            <span>Image cible :</span> 1920 × 1280<br>
+            <span>Tuile utilisée :</span> 376 × 715
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>L'image cible reste lisible malgré les différences colorimétriques avec la tuile.
+                À N=8, les blocs sont suffisamment petits pour restituer les grandes structures de
+                l'image (contours, zones de couleur), mais trop petits pour que la tuile soit reconnaissable
+                individuellement. Le résultat est satisfaisant.</p>
+        </div>
+    </div>
+
+    <!-- SÉRIE 2 : IMAGE EN NOIR ET BLANC -->
+    <div class="serie">
+        <h3 class="serie-title">Série 2 — Image en noir et blanc, N = 8</h3>
+        <p class="serie-subtitle">Image source : Oeuvre &nbsp;|&nbsp; Tuile : Colombe</p>
+
+        <div class="img-row col-4">
+            <div class="img-block tall">
+                <img src="images/NoirBlanc.jpeg" alt="Image source (N&B)">
+                <div class="img-label">Image source (N&B)</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Colombe.jpeg" alt="Image tuile (N&B)">
+                <div class="img-label">Image tuile (N&B)</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/resultat_NoirBlanc_RGB.png" alt="Mosaïque RGB">
+                <div class="img-label">Ajustement RGB</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/resultat_NoirBlanc_LAB.png" alt="Mosaïque LAB">
+                <div class="img-label">Ajustement LAB</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille des tuiles :</span> N = 8 pixels<br>
+            <span>Image cible :</span> 971 × 1747<br>
+            <span>Tuile utilisée :</span> 1363 × 1641
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>L'utilisation d'une image source et d'une tuile toutes deux en "noir et blanc",
+                simplifie l'ajustement colorimétrique : il y a moins de canaux de luminosité à aligner.
+                Le résultat est visuellement cohérent et les détails de l'image source restent bien perceptibles
+                malgré la pixelisation inhérente à N=8. Les deux méthodes d'ajustement donnent des résultats très proches dans ce cas,
+                ce qui confirme que la différence RGB/LAB est plus marquée sur les images couleur.</p>
+        </div>
+    </div>
+
+    <!-- SÉRIE 3 -->
+    <div class="serie">
+        <h3 class="serie-title">Série 3 — Image couleur, N = 8</h3>
+        <p class="serie-subtitle">Image source : Tadagbé &nbsp;|&nbsp; Image tuile : Colombe</p>
+
+        <div class="img-row col-4">
+            <div class="img-block tall">
+                <img src="images/Laurel.jpg" alt="Image source">
+                <div class="img-label">Image source</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Diallo.jpg" alt="Image tuile">
+                <div class="img-label">Image tuile</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Laurel_RGB.png" alt="Mosaïque RGB">
+                <div class="img-label">Ajustement RGB</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Laurel_LAB.png" alt="Mosaïque LAB">
+                <div class="img-label">Ajustement LAB</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille des tuiles :</span> N = 8 pixels<br>
+            <span>Image cible :</span> 720 × 720<br>
+            <span>Tuile utilisée :</span> 720 × 720
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>Lorsque la tuile et l'image source ont des palettes de couleurs différentes,
+                l'ajustement colorimétrique doit compenser un écart plus important. On remarque donc
+                des traces de rouges sur la mosaique résultante. Cela ne nuit cependant pas au resultat,
+                car le visage de mon collegue Tadagbé est reconnaissable. Nous sommes donc satusfaits du resultat.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<!-- ══════════════════ ÉTAPE 2 ══════════════════ -->
+<section class="section" id="etape2">
+    <p class="section-label">Étape 2</p>
+    <h2 class="section-title">Vraie photomosaïque</h2>
+
+    <div class="intro">
+        <h2>Principe</h2>
+        <p>
+            Chaque bloc de l'image cible est remplacé par l'image de la banque qui lui ressemble le plus,
+            selon trois critères : couleur moyenne en RGB, couleur moyenne en LAB, et intersection d'histogrammes.
+            Les descripteurs de toute la banque sont précomputés avant le traitement pour optimiser la recherche.
+        </p>
+        <div class="algo-steps">
+            <div class="algo-step"><div class="step-num">01</div><div class="step-text">Précomputer couleurs moyennes et histogrammes pour toute la banque</div></div>
+            <div class="algo-step"><div class="step-num">02</div><div class="step-text">Découper l'image cible en blocs N×N</div></div>
+            <div class="algo-step"><div class="step-num">03</div><div class="step-text">Trouver l'image la plus proche par KDTree ou intersection d'histogrammes</div></div>
+            <div class="algo-step"><div class="step-num">04</div><div class="step-text">Assembler les tuiles sélectionnées</div></div>
+        </div>
+    </div>
+
+    <span class="subsection-label">Banque d'images</span>
+    <table class="specs-table">
+        <tr><td>Nombre d'images</td><td>1088 images</td></tr>
+        <tr><td>Sources</td><td>Pixabay, Pinterest, photographies personnelles</td></tr>
+        <tr><td>Formats acceptés</td><td>.png, .jpg, .jpeg, .heic</td></tr>
+        <tr><td>Redimensionnement</td><td>N×N pixels avec interpolation LANCZOS</td></tr>
+    </table>
+
+    <span class="subsection-label">Critères de correspondance</span>
+
+    <div class="equation-box">
+        Critère 1 — Distance euclidienne RGB : d = √((R₁−R₂)² + (G₁−G₂)² + (B₁−B₂)²)
+        <div class="eq-sub">Recherche accélérée via KDTree (scipy)</div>
+    </div>
+    <div class="equation-box">
+        Critère 2 — Distance euclidienne LAB : d = √((L₁−L₂)² + (a₁−a₂)² + (b₁−b₂)²)
+        <div class="eq-sub">Espace perceptuellement uniforme — meilleure correspondance visuelle</div>
+    </div>
+    <div class="equation-box">
+        Critère 3 — Intersection d'histogrammes : sim = Σ min(h_bloc(i), h_banque(i))
+        <div class="eq-sub">Capture la distribution des couleurs plutôt que la moyenne</div>
+    </div>
+
+    <!-- SÉRIE 1 -->
+    <div class="serie">
+        <h3 class="serie-title">Série 1 — Image couleur, N = 5</h3>
+        <p class="serie-subtitle">Image cible : Ville</p>
+
+        <div class="img-row col-4">
+            <div class="img-block">
+                <img src="images/Ville.jpg" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block">
+                <img src="images/Ville_couleur_rgb.png" alt="Couleur RGB">
+                <div class="img-label">Couleur RGB</div>
+            </div>
+            <div class="img-block">
+                <img src="images/Ville_couleur_lab.png" alt="Couleur LAB">
+                <div class="img-label">Couleur LAB</div>
+            </div>
+            <div class="img-block">
+                <img src="images/Ville_histogramme.png" alt="Histogramme">
+                <div class="img-label">Histogramme</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille des tuiles :</span> N = 5 pixels<br>
+            <span>Image cible :</span> 1920 × 1280
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>À N=5, les tuiles sont très petites et l'image cible est reproduite avec une grande précision.
+                La structure urbaine de l'image est assez bien restituée par les trois critères. La couleur LAB
+                offre néanmoins les transitions les plus naturelles entre les zones colorées. Le resultat n’est pas
+                parfait mais on s’y attend bien en photomosaique. Nous sommes satisfaits du resultat obtenu.</p>
+        </div>
+    </div>
+
+    <!-- SÉRIE 2 -->
+    <div class="serie">
+        <h3 class="serie-title">Série 2 — Image couleur, N = 16</h3>
+        <p class="serie-subtitle">Image cible : NoireEtBlanche</p>
+
+        <div class="img-row col-4">
+            <div class="img-block">
+                <img src="images/NoireEtBlanche.jpg" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block">
+                <img src="images/NoireEtBlanche_couleur_rgb.png" alt="Couleur RGB">
+                <div class="img-label">Couleur RGB</div>
+            </div>
+            <div class="img-block">
+                <img src="images/NoireEtBlanche_couleur_lab.png" alt="Couleur LAB">
+                <div class="img-label">Couleur LAB</div>
+            </div>
+            <div class="img-block">
+                <img src="images/NoireEtBlanche_histogramme.png" alt="Histogramme">
+                <div class="img-label">Histogramme</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille des tuiles :</span> N = 16 pixels<br>
+            <span>Image cible :</span> 1200 × 1800
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>À partir de cette taille (N = 16), on peut appercevoir les tuiles utilisées pour
+                recréer l’image cible. Le resultat est moins net mais on obtient un niveau de précision
+                acceptable. Et c’est la que repose la beauté et l’utilité de la photomosaïque. Pour chaque critère
+                un résultat différent et tous aussi satisfaisant à observer.</p>
+        </div>
+    </div>
+
+    <!-- SÉRIE 3 -->
+    <div class="serie">
+        <h3 class="serie-title">Série 3 — Image couleur, N = 8</h3>
+        <p class="serie-subtitle">Image cible : Obama</p>
+
+        <div class="img-row col-4">
+            <div class="img-block">
+                <img src="images/obama.png" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block">
+                <img src="images/obama_rgb.png" alt="Couleur RGB">
+                <div class="img-label">Couleur RGB</div>
+            </div>
+            <div class="img-block">
+                <img src="images/obama_lab.png" alt="Couleur LAB">
+                <div class="img-label">Couleur LAB</div>
+            </div>
+            <div class="img-block">
+                <img src="images/obama_histogramme.png" alt="Histogramme">
+                <div class="img-label">Histogramme</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille des tuiles :</span> N = 8 pixels<br>
+            <span>Image cible :</span> 415 × 543
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>Je crois que nous distingons tous clairement ici Barack Obama. Malgré la netteté
+            assez peu présente. On arrive aussi à comprendre que l’image est recréée à partir de
+                plusieurs autres images, de colorimétries différentes.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<!-- ══════════════════ ÉTAPE 3 — ANALYSE ══════════════════ -->
+<section class="section" id="analyse">
+    <p class="section-label">Étape 3</p>
+    <h2 class="section-title">Analyse & Discussion</h2>
+
+    <!-- 3.1 Effet de la taille N -->
+    <div class="serie">
+        <h3 class="serie-title">3.1 — Effet de la taille des tuiles N = 8 et 60</h3>
+        <p class="serie-subtitle">Petite taille vs grande taille</p>
+
+        <div class="img-row col-3">
+            <div class="img-block tall">
+                <img src="images/Benin.jpg" alt="Image originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Benin_lab_8.jpg" alt="Mosaïque petites tuiles">
+                <div class="img-label">N = 8 — tuiles illisibles, image fidèle</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Benin_lab_60.jpg" alt="Mosaïque grandes tuiles">
+                <div class="img-label">N = 60 — tuiles lisibles, image moins précise</div>
+            </div>
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>
+                À N=8, chaque bloc capture une région très localisée de l'image cible, ce qui produit
+                une reproduction fidèle des détails fins. En revanche, les tuiles individuelles sont trop
+                petites pour être identifiables. Elles se réduisent à de simples carrés de couleur.
+            </p>
+            <p>
+                À N=60, les tuiles sont clairement reconnaissables et les images de la banque sont lisibles.
+                La contrepartie est une perte de précision dans la reconstruction : les grandes régions uniformes
+                sont bien rendues, mais les contours et les détails fins de l'image cible s'estompent. C'est le compromis
+                fondamental de toute photomosaïque.
+            </p>
+            <p>
+                Il faut aussi noter que la taille N peut paraitre plus petite ou plus grande encore dépendemment de la taille
+                de l’image cible choisie.
+            </p>
+        </div>
+    </div>
+
+    <!-- 3.2 Couleur moyenne vs histogramme -->
+    <div class="serie">
+        <h3 class="serie-title">3.2 — Couleur moyenne vs Histogramme N = 8</h3>
+        <p class="serie-subtitle">Meilleur résultat de chaque critère</p>
+
+        <div class="img-row col-3">
+            <div class="img-block tall">
+                <img src="images/jolieFemme.jpg" alt="Image originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/jolieFemme_lab.png" alt="Meilleure couleur">
+                <div class="img-label">Couleur LAB</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/jolieFemme_histogramme.png" alt="Histogramme">
+                <div class="img-label">Histogramme</div>
+            </div>
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>
+                La couleur moyenne LAB produit de meilleures correspondances colorimétriques globales.
+                En capturant la teinte dominante de chaque bloc et en sélectionnant la tuile la plus proche
+                dans l'espace perceptuel, elle assure une cohérence visuelle convaincante vue de loin.
+            </p>
+            <p>
+                L'intersection d'histogrammes mesure la similarité de distribution des pixels plutôt que
+                la couleur moyenne. Cela peut conduire à sélectionner des images dont la répartition des tons est
+                similaire sans que les couleurs dominantes correspondent. Par exemple, une image très contrastée noir/blanc
+                peut avoir une intersection élevée avec une image grise uniforme. Ce comportement explique les répétitions et
+                les incohérences colorimétriques visibles dans le résultat histogramme.
+            </p>
+        </div>
+    </div>
+
+    <!-- 3.3 RGB vs LAB -->
+    <div class="serie">
+        <h3 class="serie-title">3.3 — RGB vs LAB N = 32</h3>
+        <p class="serie-subtitle">Impact de l'espace de couleur sur la correspondance</p>
+
+        <div class="img-row col-4">
+            <div class="img-block tall">
+                <img src="images/soleil.jpg" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/automne.jpg" alt="Tuile">
+                <div class="img-label">Tuile</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/soleil_rgb.jpg" alt="Résultat RGB">
+                <div class="img-label">Résultat RGB</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/soleil_lab.jpg" alt="Résultat LAB">
+                <div class="img-label">Résultat LAB</div>
+            </div>
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>
+                L'espace RGB traite les trois canaux R, G et B de façon mathématiquement équivalente,
+                sans tenir compte du fait que l'œil humain est beaucoup plus sensible aux variations de
+                luminosité qu'aux variations de chrominance. Une même distance euclidienne en RGB peut donc
+                correspondre à des différences perçues très inégales selon les couleurs concernées.
+            </p>
+            <p>
+                L'espace LAB est conçu pour être perceptuellement uniforme : une même distance euclidienne
+                correspond à une différence visuelle similaire dans toutes les régions de l'espace colorimétrique.
+                Cela se traduit par des correspondances plus naturelles à l'œil, notamment dans les zones de
+                demi-teintes et les transitions entre couleurs chaudes et froides.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<!-- ══════════════════ LIMITES & AMÉLIORATIONS ══════════════════ -->
+<section class="section" id="limites">
+    <p class="section-label">Limites & Améliorations</p>
+    <h2 class="section-title">Limites & Améliorations</h2>
+
+    <!-- Limite 1 : Répétitions -->
+    <div class="serie">
+        <h3 class="serie-title">Limite 1 — Répétition des tuiles N = 24</h3>
+        <p class="serie-subtitle">Avant / Après limitation des répétitions</p>
+
+        <div class="img-row col-3">
+            <div class="img-block tall">
+                <img src="images/Le_loup.png" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Le_loup_lab.png" alt="Sans limitation">
+                <div class="img-label">Sans limitation</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/Le_loup_lab2.png" alt="Avec limitation">
+                <div class="img-label">Avec limitation</div>
+            </div>
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>
+                Lorsque la banque contient de nombreuses images aux teintes similaires, l'algorithme tend à sélectionner
+                les mêmes tuiles pour de nombreux blocs adjacents, créant des motifs répétitifs facilement détectables.
+                Cette limite est particulièrement visible dans les zones de couleur uniforme de l'image cible (le nez...).
+            </p>
+            <p>
+                En limitant le nombre de fois qu'une même image peut être utilisée, on force l'algorithme à diversifier ses choix.
+                Le résultat global est légèrement plus détaillé (les yeux...) et plus convaincant. Avec notre banque d’image,
+                l’effet se fait moins bien ressentir. La contrepartie est une légère
+                dégradation de la précision colorimétrique locale pour les blocs dont la meilleure correspondance est déjà épuisée.
+                Le compromis reste cependant largement favorable.</p>
+        </div>
+    </div>
+
+    <!-- Limite 2 : Ajustement colorimétrique -->
+    <div class="serie">
+        <h3 class="serie-title">Limite 2 — Ajustement colorimétrique des tuiles sélectionnées</h3>
+        <p class="serie-subtitle">Application de la translation LAB (étape 1) sur les tuiles après sélection par la banque</p>
+
+        <div class="img-row col-3">
+            <div class="img-block tall">
+                <img src="images/soleil.jpg" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/quebec.jpg" alt="Tuile">
+                <div class="img-label">Tuile</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/soleil__LAB.jpg" alt="LAB avec ajustement colorimétrique">
+                <div class="img-label">Résultat</div>
+            </div>
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>
+                Dans l'étape 1, chaque tuile est colorisée par translation LAB pour correspondre exactement à
+                la couleur moyenne du bloc cible. Ici, on a essayé de combiner 2 images avec les memes tons de couleurs
+                pour observer le résultat qui en proviendrait. On pourrait croire qu’on obtiendrait de meilleurs
+                resultats ainsi, mais on constate plutot un résultat assez satisfaisant; les couleurs emmennent de la
+                tuile sont toujours perceptible sur la source. Meme si ces 2 images se ressembles, on arrive a y
+                entrevoir une distinction entre chaque bloc.
+            </p>
+        </div>
+    </div>
+
+    <!-- Limite 3 : Diversité de la banque -->
+    <div class="serie">
+        <h3 class="serie-title">Limite 3 — Diversité de la banque d'images N = 16</h3>
+        <p class="serie-subtitle">Notre banque vs banque externe sur la même image cible</p>
+
+        <div class="img-row col-3">
+            <div class="img-block tall">
+                <img src="images/RougeBleu.jpg" alt="Image originale">
+                <div class="img-label">Image cible originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/RougeBleu1.png" alt="Avec notre banque">
+                <div class="img-label">Notre banque (1088 images)</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/RougeBleu2.png" alt="Avec une banque externe">
+                <div class="img-label">Banque externe</div>
+            </div>
+        </div>
+
+        <div class="discussion">
+            <h4>Discussion</h4>
+            <p>
+                La qualité d'une photomosaïque dépend directement de la diversité colorimétrique
+                de la banque. Notre banque de 1088 images contient environ 500 photos aux teintes
+                similaires (mêmes conditions d'éclairage, mêmes tons), ce qui limite les correspondances
+                disponibles pour certaines régions de l'image cible, notamment les zones très saturées
+                ou les teintes peu représentées.
+            </p>
+            <p>
+                La comparaison avec une banque externe plus diversifiée (de 1000 images diversifiées) illustre concrètement cet
+                impact : une banque équilibrée produit une mosaïque plus fidèle et moins sujette aux
+                répétitions. Une piste d'amélioration serait d'utiliser un clustering par k-means sur
+                les couleurs moyennes pour identifier et combler les lacunes colorimétriques de la banque.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<!-- ══════════════════ ON S'AMUSE ══════════════════ -->
+<section class="section" id="fun">
+    <p class="section-label">Bonus — Exploration créative</p>
+    <h2 class="section-title">On s'amuse</h2>
+
+    <div class="intro">
+        <h2>Mosaïque uniforme colorée sur image N&B</h2>
+        <p>
+            En choisissant une image cible en niveaux de gris et une tuile colorée,
+            on obtient un effet inattendu :
+            Le résultat final se rapproche d’une œuvre d'art abstraite.
+        </p>
+    </div>
+
+    <!-- Résultat 1 -->
+    <div class="serie">
+        <h3 class="serie-title">Exploration 1 — Tuile à dominante N = 16</h3>
+        <p class="serie-subtitle">Image N&B + tuile choisie pour sa couleur</p>
+
+        <div class="img-row col-4">
+            <div class="img-block tall">
+                <img src="images/femme.jpg" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/automne.jpg" alt="Tuile colorée">
+                <div class="img-label">Tuile</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/femme_rgb.png" alt="Résultat RGB">
+                <div class="img-label">Mosaïque RGB</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/femme_lab.png" alt="Résultat LAB">
+                <div class="img-label">Mosaïque LAB</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille de la tuile :</span> N = 16 <br>
+            <span>Image N&B :</span> 736 X 1472<br>
+            <span>Tuile :</span> 2268 X 4032 <br>
+        </div>
+
+        <div class="discussion">
+            <h4>Commentaire</h4>
+            <p>La structure de l'image originale ressort à travers les variations d'intensité,
+            tandis que la tuile apporte une palette de couleurs choisie librement. Le resultat LAB
+            est beaucoup plus proche de la réalité, mais le RGB donne à l’image ce coté artistique.
+            Il donne à la tuile l’occasion d’exister et de participer à une nouvelle vision de l’image.</p>
+        </div>
+    </div>
+
+    <!-- Résultat 2 -->
+    <div class="serie">
+        <h3 class="serie-title">Exploration 2 — Teinte forcée artificiellement N = 20</h3>
+        <p class="serie-subtitle">Ajout d'une teinte choisie sur la tuile après ajustement</p>
+
+        <div class="img-row col-6">
+            <div class="img-block tall">
+                <img src="images/coup.jpg" alt="Originale">
+                <div class="img-label">Originale</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/fleur.jpeg" alt="Tuile">
+                <div class="img-label">Tuile</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/coup_RGB_Normal.png" alt="Résultat RGB">
+                <div class="img-label">Mosaïque RGB</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/coup_RGB_Bleu.png" alt="Résultat RGB bleu">
+                <div class="img-label">Mosaïque RGB bleu</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/coup_RGB_Rouge.png" alt="Résultat RGB rouge">
+                <div class="img-label">Mosaïque RGB rouge</div>
+            </div>
+            <div class="img-block tall">
+                <img src="images/coup_RGB_Jaune.png" alt="Résultat RGB jaune">
+                <div class="img-label">Mosaïque RGB jaune</div>
+            </div>
+        </div>
+
+        <div class="params-box">
+            <span>Taille de la tuile :</span> N = 20 <br>
+            <span>Image N&B :</span> 1200 X 1614<br>
+            <span>Tuile :</span> 1242 X 1455<br>
+        </div>
+
+        <div class="discussion">
+            <h4>Commentaire</h4>
+            <p>
+                Contrairement à l'exploration 1 où la couleur dominante provient naturellement de la tuile choisie,
+                ici on force une teinte artificielle en décalant un canal colorimétrique après l'ajustement.
+                On contrôle ainsi précisément la palette finale de la mosaïque indépendamment du contenu de la tuile,
+                ce qui ouvre des possibilités créatives intéressantes.
+            </p>
+            <p>Nous avons exploré ici 4 variations de couleurs différentes, juste après la mosaique classique en RGB.
+                Les resultats sont tout à fait ceux espérés et donnent une sensation assez particulière quand on zoome
+                sur des endroits specifiques comme les yeux ou les intersections entres les visages des 2 personnages.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<!-- ══════════════════ CONCLUSION ══════════════════ -->
+<section class="section" id="conclusion">
+    <p class="section-label">Conclusion</p>
+    <h2 class="section-title">Réflexion finale</h2>
+
+    <div class="discussion">
+        <h4>Conclusion</h4>
+        <p>
+            Ce projet nous a permis d'explorer en profondeur le concept de photomosaïque, depuis la version uniforme
+            jusqu'à la vraie photomosaïque avec banque d'images. L'implémentation des différents critères de correspondance
+            (couleur moyenne en RGB, en LAB et intersection d'histogrammes) a mis en évidence l'importance
+            du choix de l'espace colorimétrique pour la qualité visuelle du résultat.
+        </p>
+        <p>
+            L'analyse comparative a confirmé que l'espace LAB, étant perceptuellement uniforme, produit des correspondances
+            visuellement plus satisfaisantes que le RGB. L'histogramme, bien que capturant plus d'information sur la distribution,
+            s'avère moins fiable pour reproduire les couleurs globales de l'image cible.
+        </p>
+        <p>
+            Les limites identifiées (répétitions de tuiles, sensibilité à la diversité de la banque..) ouvrent des pistes
+            d'amélioration intéressantes que nous avons partiellement explorées.
+        </p>
+        <p>
+            Nous tenons à remercier M. Yannick Hold-Geoffroy d’avoir accepté notre projet. Nous tenons à le remercier également pour
+            ce cours stimulant qui allie rigueur algorithmique et créativité visuelle. Les concepts abordés (espaces de couleur,
+            histogrammes, comparaison d'images..) sont fondamentaux en traitement d'images et ce projet a été pour nous une excellente
+            façon de mettre en pratique de manière concrète et créative tout l’enseignement recu.
+        </p>
+    </div>
+</section>
+
+<div style="text-align: center; padding: 60px 48px 80px; max-width: 1120px; margin: 0 auto;">
+    <p style="font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 60px); font-weight: 400; line-height: 1; color: var(--noir); letter-spacing: -1px;">
+        Mer<em style="font-style: italic; color: var(--accent);">ci !!</em>
+    </p>
+</div>
+
+</main>
+
+<footer>
+    <p>Colombe Diallo & Tadagbé Dhossou — Projet Final Photomosaïque — GIF-4105/7105 — Hiver 2026</p>
+</footer>
+
+<!-- ══════════════════ LIGHTBOX ══════════════════ -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <div class="lightbox-img-wrap" id="lightbox-wrap">
+        <img id="lightbox-img" src="" alt="">
+    </div>
+    <div class="lightbox-hint">Molette pour zoomer &nbsp;·&nbsp; Glisser pour déplacer &nbsp;·&nbsp; Échap pour fermer</div>
+    <div class="lightbox-zoom-reset" onclick="resetZoom()">Réinitialiser le zoom</div>
+</div>
+
+<script>
+    // ── Lightbox open/close ──
+    document.querySelectorAll('.img-block img').forEach(img => {
+        img.addEventListener('click', () => openLightbox(img.src));
+    });
+
+    function openLightbox(src) {
+        const lb = document.getElementById('lightbox');
+        const img = document.getElementById('lightbox-img');
+        img.src = src;
+        lb.classList.add('active');
+        resetZoom();
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+    }
+
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+
+    // ── Zoom & drag ──
+    let scale = 1;
+    let originX = 0, originY = 0;
+    let isDragging = false;
+    let startX = 0, startY = 0;
+
+    const wrap = document.getElementById('lightbox-wrap');
+    const lbImg = document.getElementById('lightbox-img');
+
+    function applyTransform() {
+        lbImg.style.transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
+    }
+
+    function resetZoom() {
+        scale = 1; originX = 0; originY = 0;
+        applyTransform();
+    }
+
+    // Zoom molette
+    wrap.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 0.85 : 1.15;
+        scale = Math.min(Math.max(scale * delta, 0.5), 10);
+        applyTransform();
+    }, { passive: false });
+
+    // Drag
+    wrap.addEventListener('mousedown', function(e) {
+        if (scale <= 1) return;
+        isDragging = true;
+        startX = e.clientX - originX;
+        startY = e.clientY - originY;
+        wrap.classList.add('dragging');
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        originX = e.clientX - startX;
+        originY = e.clientY - startY;
+        applyTransform();
+    });
+
+    document.addEventListener('mouseup', function() {
+        isDragging = false;
+        wrap.classList.remove('dragging');
+    });
+
+    // Touch zoom (pinch)
+    let lastDist = null;
+    wrap.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 2) {
+            lastDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        }
+    });
+
+    wrap.addEventListener('touchmove', function(e) {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const dist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            if (lastDist) {
+                scale = Math.min(Math.max(scale * (dist / lastDist), 0.5), 10);
+                applyTransform();
+            }
+            lastDist = dist;
+        }
+    }, { passive: false });
+
+    wrap.addEventListener('touchend', () => { lastDist = null; });
+</script>
+
+</body>
+</html>
